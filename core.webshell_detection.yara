@@ -6,7 +6,7 @@
 private rule b374k
 {
     meta:
-        author = "Blair Gillam (@blairgillam)”
+        author = "Blair Gillam (@blairgillam)"
 
     strings:
         $string = "b374k"
@@ -53,18 +53,6 @@ private rule pbot
         all of them
 }
 
-private rule passwordProtection
-{
-    meta:
-        source = "https://github.com/nbs-system/php-malware-finder"
-		
-    strings:
-        $md5 = /md5\s*\(\s*\$_(GET|REQUEST|POST|COOKIE|SERVER)[^)]+\)\s*===?\s*['"][0-9a-f]{32}['"]/ nocase
-        $sha1 = /sha1\s*\(\s*\$_(GET|REQUEST|POST|COOKIE|SERVER)[^)]+\)\s*===?\s*['"][0-9a-f]{40}['"]/ nocase
-    condition:
-        (any of them) 
-}
-
 private rule generic_jsp
 {
     meta:
@@ -92,7 +80,7 @@ private rule eval
 private rule fopo
 {
     meta:
-        source = ”https://github.com/tenable/yara-rules/blob/master/webshells/"
+        source = "https://github.com/tenable/yara-rules/blob/master/webshells/"
 
     strings:
         $ = /\$[a-zA-Z0-9]+=\"\\(142|x62)\\(141|x61)\\(163|x73)\\(145|x65)\\(66|x36)\\(64|x34)\\(137|x5f)\\(144|x64)\\(145|x65)\\(143|x63)\\(157|x6f)\\(144|x64)\\(145|x65)\";@eval\(/
@@ -104,7 +92,7 @@ private rule fopo
 private rule hardcoded_urldecode
 {
     meta:
-        source = ”https://github.com/tenable/yara-rules/blob/master/webshells/"
+        source = "https://github.com/tenable/yara-rules/blob/master/webshells/"
 
     strings:
         $ = /urldecode[\t ]*\([\t ]*'(%[0-9a-fA-F][0-9a-fA-F])+'[\t ]*\)/
@@ -116,7 +104,7 @@ private rule hardcoded_urldecode
 private rule chr_obfuscation
 {
     meta:
-        source = ”https://github.com/tenable/yara-rules/blob/master/webshells/"
+        source = "https://github.com/tenable/yara-rules/blob/master/webshells/"
 
     strings:
         $ = /\$[^=]+=[\t ]*(chr\([0-9]+\)\.?){2,}/
@@ -168,7 +156,7 @@ rule suspiciousFunctionality
         description = "Artifacts common to web shells and somewhat rare in benign files"
 
     condition:
-        passwordProtection or hiddenInAFile or hardcoded_urldecode or fopo or eval
+        hardcoded_urldecode or fopo or eval
 }
 
 rule obfuscatedFunctionality
